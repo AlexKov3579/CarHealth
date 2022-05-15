@@ -1,7 +1,14 @@
 # CarHealth
 
-This repo requires to be installed in python virtual environment
-https://docs.python.org/3/library/venv.html
+This repo requires to be installed in [Python virtual environment](https://docs.python.org/3/library/venv.html)
+Briefly, you have to create parent folder, where environment will be placed and open it with PowerShell.
+```
+python -m venv c:\path\to\myenv
+```
+Open folder with environment in powershell and execute script Activate.ps1
+```
+myenv/Scritps/Activate.ps1
+```
 
 In order to work, it also requires Django framework.
 After you created and activated virtual environment, you can install Django with command
