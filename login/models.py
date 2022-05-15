@@ -1,7 +1,6 @@
-import uuid
 from django.db import models
 
-
+# Create your models here.
 
 
 class Location (models.Model) :
@@ -16,13 +15,13 @@ class Company (models.Model) :
 class User (models.Model) :
     name = models.CharField(max_length=40)
     surname = models.CharField(max_length=40)
-    email = models.EmailField
-    companyId = models.ForeignKey(Company, on_delete=models.CASCADE)
+    email = models.EmailField(unique=True)
+    companyId = models.ForeignKey(Company, on_delete=models.CASCADE, blank = True, null = True)
     locationId = models.ForeignKey(Location, on_delete=models.CASCADE, blank= True, null= True)
     createdAt = models.DateTimeField(auto_now_add=True)
 
 class Password (models.Model) :
-    userId = models.OneToOneField(User,primary_key=True, on_delete=models.CASCADE)
+    userId = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     password = models.CharField(max_length=64)
     changedAt = models.DateTimeField(auto_now=True)
-# Create your models here.
+

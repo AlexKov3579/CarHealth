@@ -1,0 +1,15 @@
+body{
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(245,245,245,1) 57%, rgb(163, 240, 255) 100%);
+}
+.navbar{
+    border-bottom: 3px solid black;
+}
+.input-box div{
+    margin-top: 1%;
+}
+
+/* 
+.border-danger, .border-success{
+} 
+*/
