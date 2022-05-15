@@ -28,3 +28,5 @@ After that, you can run the server with
 python manage.py runserver
 ```
 from your parent folder, while virtual environment is active
+
+After server started, it will show it's address. In order to access login page, go to http:/localhost:8000/login/login.html
