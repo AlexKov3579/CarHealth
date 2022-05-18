@@ -18,6 +18,18 @@ def main(request):
 def add_car(request):
     error = ''
     form = NewCarForm(request.POST)
+
+def get_car(request):
+    car_id = request.get['car_id']
+    
+    car =  Car.objects.Get(pk = car_id)
+    if 'user' in request.session:
+        logged_user = User.objects.get(pk = request.session['user'])
+        if car.User.pk != logged_user:
+            #user tries to acces car that is registered for another user
+            return #TODO error
+    #TODO response with json file with car and parts details
+    pass
     
 
 # Create your views here.
