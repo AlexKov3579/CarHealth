@@ -59,8 +59,7 @@
       <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
         {% for car in cars %}
         <button class="col-4" id="car" data-carId = {{ car.pk }} style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
-          {{ car.Model }}
-          aaa
+          {{ car.model }}
         </button>
         {% endfor %}
       </div>
