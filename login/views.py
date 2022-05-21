@@ -15,8 +15,8 @@ def login(request):
             #если просто get(email = femail), то при несуществующем эмейле будет эксепшн
             current_user = User.objects.filter(email = femail).first()
             if current_user and Password.objects.get(userId = current_user).password == fpassword:
-                request.session['user'] = User.pk
-                return redirect ("main:main", )
+                request.session['user'] = current_user.pk
+                return redirect ("main:main")
         message = 'Email or password is not correct'
 
     elif request.method == 'GET':

@@ -11,7 +11,7 @@
     <title>Check car</title>
 
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
     
 
 
@@ -44,9 +44,9 @@
       <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
         <p style="display:inline-block; padding-left: 1vw;">Automašīna</p>
         <p style="display:inline-block; padding-left: 16.5vw;" >Mašīnas modelis</p>
-        </div>
-
-      <div class="container">
+      </div>
+        
+      {% comment %} <div class="container">
         <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
           <button class="col-4" id="car1" style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
             VW polo
@@ -55,8 +55,37 @@
           <div class="col-4" id="car1-t" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
             Polo
           </div>
-        </div>
+        </div> {% endcomment %}
+      <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
+        {% for car in cars %}
+        <button class="col-4" id="car" data-carId = {{ car.pk }} style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
+          {{ car.Model }}
+          aaa
+        </button>
+        {% endfor %}
+      </div>
+      
 
+<script type="text/javascript">
+  $(document).ready(function() {
+   $( "#car" ).on("click", function(){
+     $.ajax({
+        type:"GET",
+        url : "{% url 'main:get_car' %}",
+        data:{
+          "car_id" :$(this).attr("data-carId")
+        },
+        success: function(data){
+          alert(data)
+        },
+        error: function(error){
+          alert("error")
+        }
+      })
+    })
+  })
+          
+</script>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -69,6 +98,7 @@
 
       
   });
+
   </script>
 
 
@@ -107,7 +137,7 @@
 
 
 
-        <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
+        {% comment %} <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
           <p style="display:inline-block; padding-left: 22vw;" >Dzinējs</p>
         </div>
 
@@ -150,7 +180,7 @@
           <div class="col-4" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
             2005
           </div>
-        </div>
+        </div> {% endcomment %}
 
       </div>
       
