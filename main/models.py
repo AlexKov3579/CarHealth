@@ -11,6 +11,10 @@ class Car(models.Model):
     year = models.IntegerField()
     checkDate = models.DateField()
     nextCheckDate = models.DateField()
+    fuel = models.CharField(max_length=30, default="Dīzelis")
+    engineVol = models.FloatField(default=1.5)
+    def natural_key(self):
+        return(self.manufacturer, self.model, self.year)
 
 class PartsType(models.Model):
 
@@ -24,6 +28,9 @@ class PartsType(models.Model):
     typeName = models.CharField(max_length=50)
     conditionMeasurment = models.CharField(max_length=5, choices=ConditionMeasurment, default='KM')
     stockCondition = models.FloatField()
+    def natural_key(self):
+        return (self.typeName, self.conditionMeasurment)
+
 
 
 class Part(models.Model):
@@ -33,3 +40,4 @@ class Part(models.Model):
     manufacterDate = models.DateField(null=True)
     currentCondition = models.FloatField()
     additionalInfo = models.JSONField(null=True)
+

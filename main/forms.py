@@ -6,3 +6,6 @@ class NewCarForm(forms.Form):
     engineType = forms.CharField()
     engineVol = forms.CharField()
     year = forms.IntegerField()
+    lastCheck = forms.DateField()
+    nextCheck = forms.DateField()
+    kilometrage = forms.IntegerField()

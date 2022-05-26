@@ -13,7 +13,6 @@
             // e.preventDefault();
             if (app.validate($(this))){
                 // alert('а вот на этом моменте форма должна отправляться через $.ajax, но я пока хз, куда ее отправлять')
-                var a = 1
                 return true;
             }
             return false;            
