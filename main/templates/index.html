@@ -433,27 +433,28 @@ $(document).ready(function() {
  
 
 
-    <div style="width: 50%; height: 130vh; margin-left: 50%; ">
-      
-      {% for car in cars %}
+  <div style="width: 50%; height: 130vh; margin-left: 50%; ">
+      {% comment %} TODO hide this if another car is choosen {% endcomment %}
+    {% for car in cars %}
+    <div data-carId = {{ car.pk }}>
       <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Pēdējais odometra rādījums: </div>
 
-      <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-        <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          {{ car.kilometrage}} km
+        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
+          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
+            {{ car.kilometrage}} km
+          </div>
+          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
+            {{ car.checkDate}}
+          </div>
+          <button onclick = "showUpdateForm({{ car.kilometrage}}, null, {{ car.pk }} , true)" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
+            Atjaunināt + 
+          </button>
+          <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
+          </div>
         </div>
-        <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          {{ car.checkDate}}
-        </div>
-        <button onclick = "showUpdateForm({{ car.kilometrage}}, null, {{ car.pk }} , true)" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-          Atjaunināt + 
-        </button>
-        <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-        </div>
-      </div>
 
         {% for part in car.get_car_parts %}
-          <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;"> {{part.typeId.typeName}}</div>
+        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;"> {{part.typeId.typeName}}</div>
 
           <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
             <div class="col-2">Current :</div>
@@ -470,15 +471,15 @@ $(document).ready(function() {
               Atjaunināt + 
             </button>
             <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            </div>
           </div>
+        </div>
         {% endfor %}
         
       {% endfor %}
 
       </div>
-
     </div>
+  </div>
 
     
       <script type="text/javascript">
