@@ -12,7 +12,7 @@ class NewCarForm(forms.Form):
 
 class UpdatePartForm(forms.Form):
     newValue = forms.FloatField()
-    partId = forms.IntegerField(widget=forms.HiddenInput())
+    partId = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     carId = forms.IntegerField(widget=forms.HiddenInput())
-    updateAll = forms.BooleanField(widget=forms.HiddenInput())
+    updateAll = forms.IntegerField(widget=forms.HiddenInput())
 

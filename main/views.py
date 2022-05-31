@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from login.models import User
 from .forms import *
@@ -59,14 +59,14 @@ def update(request):
         part_id = form.cleaned_data.get('partId')
         new_value = form.cleaned_data.get('newValue')
         car_id = form.cleaned_data.get('carId')
-        if form.cleaned_data.get('updateAll'):
+        if form.cleaned_data.get('updateAll') == 1:
             car = Car.objects.get(pk = car_id)
             for part in Part.objects.filter(carId = car):
                 updatePart(part.pk, new_value)
             car.kilometrage = new_value
             return main(request)
         updatePart(part_id, new_value)
-    return main(request)
+    return redirect('main:main')
 
 
 #private methods
