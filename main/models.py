@@ -31,7 +31,7 @@ class PartsType(models.Model):
     ConditionMeasurment = [
         ('KM', 'Kilometres'),
         ('MI', 'Miles'),
-        ('Time', 'Time'),
+        ('Y', 'Year'),
         ('L', 'Volume')
     ]
 
@@ -50,7 +50,9 @@ class Part(models.Model):
     manufacterDate = models.DateField(null=True)
     currentCondition = models.FloatField()
     additionalInfo = models.JSONField(null=True)
-    
-    def in_car(self, car_id):
-        return Part.objects.filter(carId = car_id)
 
+    def get_part_name(self):
+        self.typeId.typeName
+
+    def get_part_condition_measurment(self):
+        PartsType.objects.get(self.typeId).values('conditionMeasurment')

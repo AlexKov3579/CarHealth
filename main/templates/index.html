@@ -16,6 +16,8 @@
   </head>
   <body style="background: linear-gradient(189.63deg, #FFFFFF 45.05%, #E4EBF5 100%); "> <!---height: 100vh; -->
 
+    
+
     <div style="position: fixed; width: 100vw; background: #FFFFFF; height: 110px; border-bottom: 2px solid #000000;  z-index: 5;">
 
       <h1 class="text-start" style="display:inline-block; padding-left: 1vw; font: 2vw cormorant; padding-top: 2vh;">Sākums</h1>
@@ -24,28 +26,31 @@
       <h1 class="text-end" style="display:inline-block; padding-left: 57vw; font: 2vw cormorant;" >Iziet</h1>
 
     </div>
-
-    <img src="sbV3Dqp6GS0U.png" alt="" class="text-center" style=" position: fixed; width:111px; height:100px;  z-index: 6; margin-left: 47.2vw; margin-right: auto;">
     
+    
+    <img src="sbV3Dqp6GS0U.png" alt="" class="text-center" style=" position: fixed; width:111px; height:100px;  z-index: 6; margin-left: 47.2vw; margin-right: auto;">
+    <div id="updatePartForm" class="row align-items-center justify-content-center border border-primary bg-white" style= "z-index: 3;position: fixed; margin : auto; top : 20%; left : 40% ;width: 400px; height : 400px">
+      <form action = "update" method = "post">
+        {% csrf_token %}
+        <div><label for="{{ update_form.newValue.id_for_label }}">New Value </label></div>
+        <div> {{update_form.newValue}} </div>
+        <div> {{update_form.partId}} </div>
+        <div> {{update_form.carId}} </div>
+        <div> {{update_form.updateAll}} </div>
+        <button type = "submit">Update</button>
+        <button onclick= "$('#updatePartForm').hide()">Cancel</button>
+      </form>
+    </div>
     <div style="width: 100%; height: 110px; z-index: 2; "></div>
-
+    
+    
     <div style="position: fixed; width: 50vw; height: 100vh;  margin-top: 0px;  border-right: 2px solid #000000;  " > 
       
       <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
         <p style="display:inline-block; padding-left: 1vw;">Automašīna</p>
         <p style="display:inline-block; padding-left: 16.5vw;" >Mašīnas modelis</p>
       </div>
-        
-      {% comment %} <div class="container">
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <button class="col-4" id="car1" style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
-            VW polo
-          </button>
-          <div class="col-2"></div>
-          <div class="col-4" id="car1-t" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            Polo
-          </div>
-        </div> {% endcomment %}
+      
       
       <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
         <div class = "col-4">  
@@ -435,12 +440,12 @@ $(document).ready(function() {
 
       <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
         <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          {{ car.kilometrage}}
+          {{ car.kilometrage}} km
         </div>
         <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
           {{ car.checkDate}}
         </div>
-        <button onclick = "showUpdateForm(Null, '" + {{ car.pk }} + "', true)" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
+        <button onclick = "showUpdateForm({{ car.kilometrage}}, null, {{ car.pk }} , true)" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
           Atjaunināt + 
         </button>
         <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
@@ -448,15 +453,20 @@ $(document).ready(function() {
       </div>
 
         {% for part in car.get_car_parts %}
-          <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Pēdējais odometra rādījums: </div>
+          <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;"> {{part.typeId.typeName}}</div>
 
           <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
+            <div class="col-2">Current :</div>
+            <div class="col-2">Maximum :</div>
+          </div>
+          <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
             <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
+              {{part.currentCondition}} {{part.typeId.conditionMeasurment}}
             </div>
             <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-              26/10/2021
+              {{part.typeId.stockCondition}} {{part.typeId.conditionMeasurment}}
             </div>
-            <button id="atvertOdometrs" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
+            <button onclick = "showUpdateForm({{part.currentCondition}}, {{ part.pk }}, {{ car.pk }}, false)" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
               Atjaunināt + 
             </button>
             <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
@@ -470,20 +480,18 @@ $(document).ready(function() {
 
     </div>
 
-    <div id="updatePartForm">
-      <form>
-        {% csrf_token %}
-        <div><label for="{{ update_form.newValue.id_for_label }}">New Value </label></div>
-        <div> {{update_form.newValue}} </div>
-        <button>Update</button>
-        <button onclick= "$('#updatePartForm').hide()">Cancel</button>
-      </form>
-      
-      
-    </div>
+    
       <script type="text/javascript">
-        function showUpdateForm(partId, carId, updateAll){
-          $("#updatePartForm").show()
+        $(document).ready(function() {
+          $( "#updatePartForm" ).hide();
+        })
+
+        function showUpdateForm(currentValue, partId, carId, updateAll){
+          $( "#updatePartForm" ).show();
+          $( "#id_newValue").val(currentValue)
+          $( "#id_partId").val(partId)
+          $( "#id_carId").val(carId)
+          $( "#id_updateAll").val(updateAll ? True : False)
         }
 
         function update(){

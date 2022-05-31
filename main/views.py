@@ -64,8 +64,9 @@ def update(request):
             for part in Part.objects.filter(carId = car):
                 updatePart(part.pk, new_value)
             car.kilometrage = new_value
-            return
+            return main(request)
         updatePart(part_id, new_value)
+    return main(request)
 
 
 #private methods
