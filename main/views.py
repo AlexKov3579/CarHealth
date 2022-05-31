@@ -62,9 +62,10 @@ def update(request):
         if form.cleaned_data.get('updateAll') == 1:
             car = Car.objects.get(pk = car_id)
             for part in Part.objects.filter(carId = car):
-                difference = form_value - car.kilometrage 
-                new_value = part.currentCondition + difference
-                updatePart(part.pk, new_value)
+                if part.typeId.conditionMeasurment == 'km':
+                    difference = form_value - car.kilometrage 
+                    new_value = part.currentCondition + difference
+                    updatePart(part.pk, new_value)
             car.kilometrage = form_value
             car.save()
             return main(request)
