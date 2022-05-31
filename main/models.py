@@ -16,6 +16,16 @@ class Car(models.Model):
     def natural_key(self):
         return(self.manufacturer, self.model, self.year)
 
+    def main_info(self):
+        return {'kilometrage' : self.kilometrage,
+                'manufactur date': self.year,
+                'Last check date' : self.checkDate,
+                'Next check date' :self.nextCheckDate,
+                'Type of fuel' :self.fuel,
+                'Engine volume' : self.engineVol}
+    def get_car_parts(self):
+        return Part.objects.filter(carId = self.pk)
+
 class PartsType(models.Model):
 
     ConditionMeasurment = [
@@ -40,4 +50,7 @@ class Part(models.Model):
     manufacterDate = models.DateField(null=True)
     currentCondition = models.FloatField()
     additionalInfo = models.JSONField(null=True)
+    
+    def in_car(self, car_id):
+        return Part.objects.filter(carId = car_id)
 

@@ -13,13 +13,8 @@
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
     
-
-
-
-
   </head>
   <body style="background: linear-gradient(189.63deg, #FFFFFF 45.05%, #E4EBF5 100%); "> <!---height: 100vh; -->
-
 
     <div style="position: fixed; width: 100vw; background: #FFFFFF; height: 110px; border-bottom: 2px solid #000000;  z-index: 5;">
 
@@ -30,14 +25,9 @@
 
     </div>
 
-    
     <img src="sbV3Dqp6GS0U.png" alt="" class="text-center" style=" position: fixed; width:111px; height:100px;  z-index: 6; margin-left: 47.2vw; margin-right: auto;">
     
-
-
     <div style="width: 100%; height: 110px; z-index: 2; "></div>
-
-    
 
     <div style="position: fixed; width: 50vw; height: 100vh;  margin-top: 0px;  border-right: 2px solid #000000;  " > 
       
@@ -56,144 +46,53 @@
             Polo
           </div>
         </div> {% endcomment %}
-      {% for car in cars %}
+      
       <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-        <button class="col-4" id="car" data-carId = {{ car.pk }} style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
-          {{ car.model }}
-        </button>
-        <div>
-          {% comment %} здесь можно сделать таблицу с данными, полученными при выборе машины {% endcomment %}
+        <div class = "col-4">  
+          {% for car in cars %}
+          <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
+            <button class="col" id="car" data-carId = {{ car.pk }} style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
+              {{ car.manufacturer }} : {{ car.model }}
+            </button>
+          </div>
+          {% endfor %}
+          </div>
+          <div class = "col-4" > 
+            {% for car in cars %}
+              <div class = "car-data" data-carId = {{ car.pk }}>
+                {% for key, value in car.main_info.items %}
+                  {% if key != 'kilometrage' %}
+                  <div style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; text-align: center; padding-top: 15px;">
+                    {{ key }} : {{ value }}
+                  </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endfor %}
         </div>
+            
       </div>
-       {% endfor %}
-
-<script type="text/javascript">
-  $(document).ready(function() {
-   $( "#car" ).on("click", function(){
-     $.ajax({
-        type:"GET",
-        url : "{% url 'main:get_car' %}",
-        data:{
-          "car_id" :$(this).attr("data-carId")
-        },
-        success: function(data){
-          console.log(JSON.stringify(data, null, '\t'))
-          $("#car").not(this).removeClass("active")
-          $(this).addClass("active")
-        },
-        error: function(error){
-          alert("error")
-        }
-      })
-    })
-  })
-          
-</script>
-
-<script type="text/javascript">
-  $(document).ready(function() {
+      
       
 
-  $("#car1").css('background-color','#EBF0F7');
-  $("#car1").css('margin-left','40px');
-  $("#car1-t").css('margin-left','-20px');
+      <script type="text/javascript">
+        $(document).ready(function() {
+          $( "#car" ).on("click", function(){
+            carId = $(this).attr("data-carId")
+            $(".car-data").not(this).hide()
+            $("div[data-carId = '" + carId + "']").show()
 
+            $("#car").not(this).removeClass("active")
+            $(this).addClass("active")
+          })
+        })
+                
+      </script>
 
-      
-  });
-
-  </script>
-
-
-<script type="text/javascript">
-  $(document).ready(function() {
-      $("#car1").click(function(){
-
-        $("#car1").css('background-color','#EBF0F7');
-        $("#car1").css('margin-left','40px');
-        $("#car1-t").css('margin-left','-20px');
-
-
-        $("#car2").css('background-color','#FFFFFF');
-        $("#car2").css('margin-left','10px');
-        $("#car2-t").css('margin-left','10px');
-      });
-  });
-  </script>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-      $("#car2").click(function(){
-        $("#car2").css('background-color','#EBF0F7');
-        $("#car2").css('margin-left','40px');
-        $("#car2-t").css('margin-left','-20px');
-
-
-        $("#car1").css('background-color','#FFFFFF');
-        $("#car1").css('margin-left','10px');
-        $("#car1-t").css('margin-left','10px');
-
-
-      });
-  });
-  </script>
-
-
-
-        {% comment %} <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
-          <p style="display:inline-block; padding-left: 22vw;" >Dzinējs</p>
-        </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <button class="col-4" id="car2" style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
-            Toyota
-          </button>
-          <div class="col-2"></div>
-          <div class="col-4" id="car2-t" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            Dīzelis
-          </div>
-        </div>
-        
-
-
-        <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
-          <p style="display:inline-block; padding-left: 22vw;" >Dzinēja apjoms</p>
-        </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-
-          <button class="col-4" style="background-color: #99C4FF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
-            Pievienot + 
-          </button>
-
-          <div class="col-2"></div>
-          <div class="col-4" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            1.9 L
-          </div>
-        </div>
-
-        <div style="padding-top: 3.5vh; padding-bottom: 0.08vh; padding-left: 4vw; font: 20px cormorant;">
-          <p style="display:inline-block; padding-left: 22vw;" >Izgatavošanas gads</p>
-        </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col-4" style="margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          </div>
-          <div class="col-2"></div>
-          <div class="col-4" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            2005
-          </div>
-        </div> {% endcomment %}
 
       </div>
       
     </div>
-
-
-
-
-
-
 
   <div id="dzinejaElla" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
 
@@ -233,11 +132,6 @@
       });
   });
 </script>
-
-
-
-
-
 
 
 <div id="odometrs" style=" display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
@@ -536,178 +430,67 @@ $(document).ready(function() {
 
     <div style="width: 50%; height: 130vh; margin-left: 50%; ">
       
+      {% for car in cars %}
       <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Pēdējais odometra rādījums: </div>
 
       <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
         <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          218939 km
+          {{ car.kilometrage}}
         </div>
         <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          26/10/2021
+          {{ car.checkDate}}
         </div>
-        <button id="atvertOdometrs" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
+        <button onclick = "showUpdateForm(Null, '" + {{ car.pk }} + "', true)" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
           Atjaunināt + 
         </button>
         <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
         </div>
       </div>
 
-    
-      <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Tehniskā apskate derīga līdz: </div>
+        {% for part in car.get_car_parts %}
+          <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Pēdējais odometra rādījums: </div>
 
-      <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
+          <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
+            <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
+            </div>
+            <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
+              26/10/2021
+            </div>
+            <button id="atvertOdometrs" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
+              Atjaunināt + 
+            </button>
+            <div class="col-5" style=" margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
+            </div>
+          </div>
+        {% endfor %}
         
-        <div class="col-1"></div>
-        <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          26/10/2021
-        </div>
-                
-        <div class="col-3"></div>
-        
-        <div class="col-5" style="border: 2px solid #000000; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-          Jāveic tehnsikā apskate 15 dienu laikā
-        </div>
-      </div>
-
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Dzinēja eļļās un filtra maiņā veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertElla" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic ēļļas maiņa 245 dienu laikā vai pēc 4258 km 
-          </div>
-        </div>
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Gaisa filtru maiņa veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertGaisaFiltrs" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic gaisa filtra maiņa 245 dienu laikā vai pēc 4258 km  
-          </div>
-        </div>
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Bremžu šķidruma maiņa veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertBremzuSkidrums" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic bremžu šķidruma maiņa 610 dienu laikā vai pēc 14258 km   
-          </div>
-        </div>
-
-
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Priekšējo bremžu suportu maiņā veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertprieksejieSuporti" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic suportu maiņa pēc apmēram 14258 km    
-          </div>
-        </div>
-
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Aizmugurējo bremžu suportu maiņā veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertaizmugurejieSuporti" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic suportu maiņa pēc apmēram 14258 km   
-          </div>
-        </div>
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Priekšējo bremžu disku maiņā veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertprieksejieDiski" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic disku maiņa pēc apmēram 14258 km   
-          </div>
-        </div>
-
-
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Aizmugurējo bremžu disku maiņā veikta: </div>
-
-        <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            218939 km
-          </div>
-          <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 15px;">
-            26/10/2021
-          </div>
-          <button id="atvertaizmugurejieDiski" class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center;  background-color: #99C4FF;">
-            Atjaunināt + 
-          </button>
-          <div class="col-5" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-top: 5px;">
-            Jāveic disku maiņa pēc apmēram 14258 km   
-          </div>
-        </div>
-
-
-        
+      {% endfor %}
 
       </div>
 
     </div>
 
+    <div id="updatePartForm">
+      <form>
+        {% csrf_token %}
+        <div><label for="{{ update_form.newValue.id_for_label }}">New Value </label></div>
+        <div> {{update_form.newValue}} </div>
+        <button>Update</button>
+        <button onclick= "$('#updatePartForm').hide()">Cancel</button>
+      </form>
+      
+      
+    </div>
+      <script type="text/javascript">
+        function showUpdateForm(partId, carId, updateAll){
+          $("#updatePartForm").show()
+        }
 
-
-
-
-
-
-
-
+        function update(){
+          
+        }
+                
+      </script>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 

@@ -5,4 +5,5 @@ from . import views
 app_name = 'main'
 
 urlpatterns =  [path('index.html', views.main, name='main'),
-                path('get_car', views.get_car, name='get_car')]
+                path('add_car', views.add_car, name='add_car'),
+                path('update', views.update, name='update')]

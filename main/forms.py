@@ -9,3 +9,10 @@ class NewCarForm(forms.Form):
     lastCheck = forms.DateField()
     nextCheck = forms.DateField()
     kilometrage = forms.IntegerField()
+
+class UpdatePartForm(forms.Form):
+    newValue = forms.FloatField()
+    partId = forms.IntegerField(widget=forms.HiddenInput())
+    carId = forms.IntegerField(widget=forms.HiddenInput())
+    updateAll = forms.BooleanField(widget=forms.HiddenInput())
+

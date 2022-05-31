@@ -1,7 +1,4 @@
-from dataclasses import fields
 from django.shortcuts import render
-from django.core import serializers
-from django.http import JsonResponse
 from .models import *
 from login.models import User
 from .forms import *
@@ -10,15 +7,17 @@ from .forms import *
 def main(request):
     error = ''
     if 'user' in request.session:
-        logged_user = User.objects.get(pk = request.session['user'])
-        user_cars = Car.objects.filter(userId = logged_user)
-        print(user_cars.count)
-
+        car_details = get_cars_details(request)
+        context = {'error' : error} | car_details
+        # forms = {}
+        # for car in car_details.get('cars'):
+        #     forms[car.pk] = UpdatePartForm(kilometrage = car.kilometrage, carId = car.pk)
+        # context = context | {'forms': forms}
+        context = context | {'update_form': UpdatePartForm()}
     else:
         error = "You are not logged in"
         return render (request, "index.html", {'error' : error })
-
-    return render (request, "index.html", {'error' : error, 'cars': user_cars})
+    return render (request, "index.html", context)
 
 def add_car(request):
     error = ''
@@ -34,33 +33,50 @@ def add_car(request):
         fkilometrage = form.cleaned_data.get('kilometrage')
 
         car = Car.objects.create(manufaturer = fmanufacturer,
-                            model = fmodel,
-                            engineType = fengineType,
-                            engineVol = fengineVol,
-                            year = fyear,
-                            checkDate = flastCheck,
-                            nextCheckDate = fnextCheck,
-                            kilometrage = fkilometrage)
+                                model = fmodel,
+                                engineType = fengineType,
+                                engineVol = fengineVol,
+                                year = fyear,
+                                checkDate = flastCheck,
+                                nextCheckDate = fnextCheck,
+                                kilometrage = fkilometrage)
         
         part_types = PartsType.objects.all()
         for part in part_types:
             Part.objects.create(carId = car, typeId = part, currentCondition = 0)
 
-def get_car(request):
-    car_id = request.GET['car_id']
-    
-    car =  Car.objects.get(pk = car_id)
+def get_cars_details(request):
     if 'user' in request.session:
         logged_user = User.objects.get(pk = request.session['user'])
-        if car.userId.pk != logged_user.pk:
-            #user tries to acces car that is registered for another user
-            return JsonResponse({'data': 'error'})
-        car_parts = Part.objects.filter(carId = car_id)
-        print(car_parts)
-        serialized = serializers.serialize('json', car_parts,  use_natural_foreign_keys = True)
-        print(serialized)
-    return JsonResponse(serialized, safe=False)
-    #TODO response with json file with car and parts details
+        cars = Car.objects.filter(userId = logged_user)
+        parts = Part.objects.filter(carId__in = cars)
+        part_types = PartsType.objects.all()
+        return {'cars' : cars, 'parts' : parts, 'part_types': part_types}
+
+def update(request):
+    form = UpdatePartForm(request.POST)
+    if form.is_valid():
+        part_id = form.cleaned_data.get('partId')
+        new_value = form.cleaned_data.get('newValue')
+        car_id = form.cleaned_data.get('carId')
+        if form.cleaned_data.get('updateAll'):
+            car = Car.objects.get(pk = car_id)
+            for part in Part.objects.filter(carId = car):
+                updatePart(part.pk, new_value)
+            car.kilometrage = new_value
+            return
+        updatePart(part_id, new_value)
+
+
+#private methods
+def updatePart(part_id, new_value):
+    part = Part.objects.get(pk = part_id)
+    if part.currentCondition < new_value:
+            part.currentCondition = new_value
+    part.save()
+
+
+
     
 
 
