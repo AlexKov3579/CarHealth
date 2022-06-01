@@ -15,15 +15,15 @@
       <div class="row vh-100 d-flex justify-content-center align-items-center">
         <div class="col-10 mx-auto" id="registration">
           <h1 class="text-center" style="padding: 5%">
-            Esiet sveicināti mašīnas detaļu nolietojuma izsekošanas rīkā!
+            <font face = "Cormorant SC">Esiet sveicināti mašīnas detaļu nolietojuma izsekošanas rīkā!</font>
           </h1>
           <form action= "login.html" method="post">
             {% csrf_token %}
             {% if message %} <div class = "text-center alert alert-info"> {{ message }} {%endif%}</div>
             <div class="col-12 text-center input-box">
-              <div><label for="{{ form.email.id_for_label }}">E-pasts</label></div>
+              <div><label for="{{ form.email.id_for_label }}"><font face = "Cormorant SC">E-pasts</font></label></div>
               <div> {{ form.email }}</div>
-              <div><label for="{{ form.password.id_for_label }}">Parole</label></div>
+              <div><label for="{{ form.password.id_for_label }}"><font face = "Cormorant SC">Parole</font></label></div>
               <div>{{ form.password }}</div>
             </div>
             <div class="col-12 text-center" style="padding-top: 2%">
@@ -32,11 +32,11 @@
                 class="btn btn-dark text-uppercase login-btn"
                 type="submit"
               >
-                Pierakstīties
+              <font face = "Cormorant SC">Pierakstīties</font>
               </button>
               <div>
                 <span
-                  >Nav profila? <a href="register.html">Reģistrēties</a></span
+                  ><font face = "Cormorant SC">Nav profila?</font> <a href="register.html"><font face = "Cormorant SC">Reģistrēties</font></a></span
                 >
               </div>
             </div>
