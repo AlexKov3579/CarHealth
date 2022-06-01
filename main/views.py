@@ -14,6 +14,7 @@ def main(request):
         #     forms[car.pk] = UpdatePartForm(kilometrage = car.kilometrage, carId = car.pk)
         # context = context | {'forms': forms}
         context = context | {'update_form': UpdatePartForm()}
+        context = context | {'new_car_form' : NewCarForm()}
     else:
         error = "You are not logged in"
         return render (request, "index.html", {'error' : error })
@@ -23,27 +24,34 @@ def add_car(request):
     error = ''
     form = NewCarForm(request.POST)
     if form.is_valid():
-        fmanufacturer = form.cleaned_data.get('manufacturer')
-        fmodel = form.cleaned_data.get('model')
-        fengineType = form.cleaned_data.get('engineType')
-        fengineVol = form.cleaned_data.get('engineVol')
-        fyear = form.cleaned_data.get('year')
-        flastCheck = form.cleaned_data.get('lastCheck')
-        fnextCheck = form.cleaned_data.get('nextCheck')
-        fkilometrage = form.cleaned_data.get('kilometrage')
+        if 'user' in request.session:
+            logged_user = User.objects.get(pk = request.session['user'])
+            fmanufacturer = form.cleaned_data.get('manufacturer')
+            fmodel = form.cleaned_data.get('model')
+            fengineType = form.cleaned_data.get('engineType')
+            fengineVol = form.cleaned_data.get('engineVol')
+            fyear = form.cleaned_data.get('year')
+            flastCheck = form.cleaned_data.get('lastCheck')
+            fnextCheck = form.cleaned_data.get('nextCheck')
+            fkilometrage = form.cleaned_data.get('kilometrage')
 
-        car = Car.objects.create(manufaturer = fmanufacturer,
-                                model = fmodel,
-                                engineType = fengineType,
-                                engineVol = fengineVol,
-                                year = fyear,
-                                checkDate = flastCheck,
-                                nextCheckDate = fnextCheck,
-                                kilometrage = fkilometrage)
+            car = Car.objects.create(userId = logged_user,
+                                    manufacturer = fmanufacturer,
+                                    model = fmodel,
+                                    fuel = fengineType,
+                                    engineVol = fengineVol,
+                                    year = fyear,
+                                    checkDate = flastCheck,
+                                    nextCheckDate = fnextCheck,
+                                    kilometrage = fkilometrage)
+            
+            part_types = PartsType.objects.all()
+            for part in part_types:
+                Part.objects.create(carId = car, typeId = part, currentCondition = 0)
         
-        part_types = PartsType.objects.all()
-        for part in part_types:
-            Part.objects.create(carId = car, typeId = part, currentCondition = 0)
+    else :
+        error = "error in form"
+    return redirect('main:main')
 
 def get_cars_details(request):
     if 'user' in request.session:
@@ -69,7 +77,7 @@ def update(request):
             car.kilometrage = form_value
             car.save()
             return main(request)
-        updatePart(part_id, new_value)
+        updatePart(part_id, form_value)
     return redirect('main:main')
 
 

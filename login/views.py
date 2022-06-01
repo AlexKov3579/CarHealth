@@ -15,6 +15,7 @@ def login(request):
             #если просто get(email = femail), то при несуществующем эмейле будет эксепшн
             current_user = User.objects.filter(email = femail).first()
             if current_user and Password.objects.get(userId = current_user).password == fpassword:
+                request.session.flush()
                 request.session['user'] = current_user.pk
                 return redirect ("main:main")
         message = 'Email or password is not correct'
@@ -39,6 +40,8 @@ def register(request):
             else:
                 user = User.objects.create(name=fname, surname = fsurname, email = femail)
                 Password.objects.create(userId = user, password = fpassword)
+                request.session.flush()
+                request.session['user'] = user.pk
                 return redirect ("main:main")
     elif request.method == 'GET':
         form = forms.RegisterForm()

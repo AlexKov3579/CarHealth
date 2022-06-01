@@ -4,6 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -28,7 +29,31 @@
     </div>
     
     
-    <img src="sbV3Dqp6GS0U.png" alt="" class="text-center" style=" position: fixed; width:111px; height:100px;  z-index: 6; margin-left: 47.2vw; margin-right: auto;">
+    <img src="{% static 'img/logo.png' %}" alt="" class="text-center" style=" position: fixed; width:111px; height:100px;  z-index: 6; margin-left: 47.2vw; margin-right: auto;">
+    <div id="newCarForm" class="row align-items-center justify-content-center border border-primary bg-white" style= "z-index: 3;position: fixed; margin : auto; top : 20%; left : 40% ;width: 400px; height : auto; padding-top : 15px;auto; padding-bottom : 15px;">
+      <form action = "add_car" method = "post">
+        {% csrf_token %}
+        <div><label for="{{ new_car_form.manufacturer.id_for_label }}">Manufacturer </label></div>
+        <div> {{new_car_form.manufacturer}} </div>
+        <div><label for="{{ new_car_form.model.id_for_label }}">model </label></div>
+        <div> {{new_car_form.model}} </div>
+        <div><label for="{{ new_car_form.engineType.id_for_label }}">Fuel Type </label></div>
+        <div> {{new_car_form.engineType}} </div>
+        <div><label for="{{ new_car_form.engineVol.id_for_label }}">Engine Volume </label></div>
+        <div> {{new_car_form.engineVol}} </div>
+        <div><label for="{{ new_car_form.year.id_for_label }}">Year </label></div>
+        <div> {{new_car_form.year}} </div>
+        <div><label for="{{ new_car_form.lastCheck.id_for_label }}">Last check date </label></div>
+        <div> {{new_car_form.lastCheck}} </div>
+        <div><label for="{{ new_car_form.nextCheck.id_for_label }}">New check date </label></div>
+        <div> {{new_car_form.nextCheck}} </div>
+        <div><label for="{{ new_car_form.kilometrage.id_for_label }}">Kilometrage </label></div>
+        <div> {{new_car_form.kilometrage}} </div>
+        <button type = "submit">Add</button>
+        <button type = "button" onclick= "$('#newCarForm').hide()">Cancel</button>
+      </form>
+    </div>
+
     <div id="updatePartForm" class="row align-items-center justify-content-center border border-primary bg-white" style= "z-index: 3;position: fixed; margin : auto; top : 20%; left : 40% ;width: 400px; height : 400px">
       <form action = "update" method = "post">
         {% csrf_token %}
@@ -38,7 +63,7 @@
         <div> {{update_form.carId}} </div>
         <div> {{update_form.updateAll}} </div>
         <button type = "submit">Update</button>
-        <button onclick= "$('#updatePartForm').hide()">Cancel</button>
+        <button type = "button" onclick= "$('#updatePartForm').hide()">Cancel</button>
       </form>
     </div>
     <div style="width: 100%; height: 110px; z-index: 2; "></div>
@@ -61,6 +86,9 @@
             </button>
           </div>
           {% endfor %}
+          <button onclick= "$('#newCarForm').show()" class="col-4" style="background-color: #99C4FF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; ">
+            Pievienot + 
+          </button>
           </div>
           <div class = "col-4" > 
             {% for car in cars %}
@@ -77,366 +105,16 @@
         </div>
             
       </div>
-      
-      
-
-      <script type="text/javascript">
-        $(document).ready(function() {
-          $( "#car" ).on("click", function(){
-            carId = $(this).attr("data-carId")
-            $(".car-data").not(this).hide()
-            $("div[data-carId = '" + carId + "']").show()
-
-            $("#car").not(this).removeClass("active")
-            $(this).addClass("active")
-          })
-        })
-                
-      </script>
-
 
       </div>
       
     </div>
 
-  <div id="dzinejaElla" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-    <div style="padding-top: 4vh; "></div>
-    <p class="text-center">Atjaunināt dzinēja eļļās un filtra maiņās veikšanu</p>
-    <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-    <input id="dzinejaEllaInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-    <p class="text-center" style="display:inline-block;">KM</p>
-
-    <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-      <button id="aizvertElla" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-      <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-    </div>
-  </div>
-
-  <script type="text/javascript">
-    $("#dzinejaElla").hide();
-    $(document).ready(function() {
-        $("#aizvertElla").click(function() {
-          $("#dzinejaElla").hide();
-        });
-    });
-  </script>
-
-<script type="text/javascript">
-  $(document).ready(function() {
-      $("#atvertElla").click(function() {
-        $("#bremzuSkidrums").show();
-        $("#aizmugurejieDiski").hide();
-        $("#prieksejieDiski").hide();
-        $("#aizmugurejieSuporti").hide();
-        $("#prieksejieSuporti").hide();
-        $("#bremzuSkidrums").hide();
-        $("#gaisaFiltrs").hide();
-        $("#odometrs").hide();
-        $("#dzinejaElla").show();
-      });
-  });
-</script>
-
-
-<div id="odometrs" style=" display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt pēdējo Odometra rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="odometrsInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertOdometrs" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#odometrs").hide();
-  $(document).ready(function() {
-      $("#aizvertOdometrs").click(function() {
-        $("#odometrs").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertOdometrs").click(function() {
-      $("#dzinejaElla").hide();
-      $("#bremzuSkidrums").show();
-      $("#aizmugurejieDiski").hide();
-      $("#prieksejieDiski").hide();
-      $("#aizmugurejieSuporti").hide();
-      $("#prieksejieSuporti").hide();
-      $("#bremzuSkidrums").hide();
-      $("#gaisaFiltrs").hide();
-      $("#odometrs").show();
-    });
-});
-</script>
-
-
-
-
-<div id="gaisaFiltrs" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt gaisa filtra nomaiņas rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="gaisaFiltrsInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertGaisaFiltrs" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#gaisaFiltrs").hide();
-  $(document).ready(function() {
-      $("#aizvertGaisaFiltrs").click(function() {
-        $("#gaisaFiltrs").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertGaisaFiltrs").click(function() {
-      $("#dzinejaElla").hide();
-      $("#odometrs").hide();
-      $("#bremzuSkidrums").show();
-      $("#aizmugurejieDiski").hide();
-      $("#prieksejieDiski").hide();
-      $("#aizmugurejieSuporti").hide();
-      $("#prieksejieSuporti").hide();
-      $("#bremzuSkidrums").hide();
-      $("#gaisaFiltrs").show();
-    });
-});
-</script>
-
-
-<div id="bremzuSkidrums" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt bremžu šķidruma nomaiņas rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="bremzuSkidrumsInput"  type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertBremzuSkidrums" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#bremzuSkidrums").hide();
-  $(document).ready(function() {
-      $("#aizvertBremzuSkidrums").click(function() {
-        $("#bremzuSkidrums").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertBremzuSkidrums").click(function() {
-      $("#dzinejaElla").hide();
-      $("#odometrs").hide();
-      $("#gaisaFiltrs").hide();
-      $("#bremzuSkidrums").show();
-      $("#aizmugurejieDiski").hide();
-      $("#prieksejieDiski").hide();
-      $("#aizmugurejieSuporti").hide();
-      $("#prieksejieSuporti").hide();
-      $("#bremzuSkidrums").show();
-    });
-});
-</script>
-
-
-
-
-<div id="prieksejieSuporti" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt priekšējo suportu nomaiņas rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="prieksejieSuportiInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertprieksejieSuporti" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#prieksejieSuporti").hide();
-  $(document).ready(function() {
-      $("#aizvertprieksejieSuporti").click(function() {
-        $("#prieksejieSuporti").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertprieksejieSuporti").click(function() {
-      $("#dzinejaElla").hide();
-      $("#odometrs").hide();
-      $("#gaisaFiltrs").hide();
-      $("#bremzuSkidrums").hide();
-      
-      $("#aizmugurejieDiski").hide();
-      $("#prieksejieDiski").hide();
-      $("#aizmugurejieSuporti").hide();
-
-      $("#prieksejieSuporti").show();
-    });
-});
-</script>
-
-
-<div id="aizmugurejieSuporti" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt aizmugurēji suportu nomaiņas rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="aizmugurejieSuportiInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertaizmugurejieSuporti" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#aizmugurejieSuporti").hide();
-  $(document).ready(function() {
-      $("#aizvertaizmugurejieSuporti").click(function() {
-        $("#aizmugurejieSuporti").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertaizmugurejieSuporti").click(function() {
-
-      $("#dzinejaElla").hide();
-      $("#odometrs").hide();
-      $("#gaisaFiltrs").hide();
-      $("#bremzuSkidrums").hide();
-      $("#prieksejieSuporti").hide();
-      $("#aizmugurejieDiski").hide();
-      $("#prieksejieDiski").hide();
-      $("#aizmugurejieSuporti").show();
-      
-    });
-});
-</script>
-
-
-
-
-<div id="prieksejieDiski" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt priekšējo disku nomaiņas rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="prieksejieDiskiInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertprieksejieDiski" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#prieksejieDiski").hide();
-  $(document).ready(function() {
-      $("#aizvertprieksejieDiski").click(function() {
-        $("#prieksejieDiski").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertprieksejieDiski").click(function() {
-
-      $("#dzinejaElla").hide();
-      $("#odometrs").hide();
-      $("#gaisaFiltrs").hide();
-      $("#bremzuSkidrums").hide();
-      $("#prieksejieSuporti").hide()
-      $("#aizmugurejieSuporti").hide();
-      $("#aizmugurejieDiski").hide();
-      
-      $("#prieksejieDiski").show();
-    });
-});
-</script>
-
-
-
-<div id="aizmugurejieDiski" style="display:none; position: fixed; width: 30vw; height: 30vh;  margin-top: 20vh; margin-left: 34vw;  border: 2px solid #000000; background-color: #FFFFFF; border-radius: 4px; "> 
-
-  <div style="padding-top: 4vh; "></div>
-  <p class="text-center">Atjaunināt aizmugurējo disku nomaiņas rādījumu</p>
-  <p class="text-center">Odometra rādijums uz doto brīdi:</p>
-  <input id="aizmugurejieDiskiInput" type="text" style="border-radius: 4px; margin-left: 10vw; width: 10vw; height: 4vh;">
-  <p class="text-center" style="display:inline-block;">KM</p>
-
-  <div style=" width: 30vw; height: 7vh; margin-top: 9vh; margin-left: -2px; border: 2px solid #000000; background-color: #F1F5F8; border-radius: 4px;">
-    <button id="aizvertaizmugurejieDiski" style="display:inline-block; margin-left: 1vw; margin-top: 0.7vh; width: 10vw; height: 4vh; background-color: #F1F5F8; border-radius: 4px;"> Atcelt</button>
-    <button style="display:inline-block; margin-left: 7vw; width: 10vw; height: 4vh; background-color: #D0FF83; border-radius: 4px;"> Atjaunināt</button>
-  </div>
-</div>
-
-<script type="text/javascript">
-  $("#aizmugurejieDiski").hide();
-  $(document).ready(function() {
-      $("#aizvertaizmugurejieDiski").click(function() {
-        $("#aizmugurejieDiski").hide();
-      });
-  });
-</script>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#atvertaizmugurejieDiski").click(function() {
-      $("#dzinejaElla").hide();
-      $("#odometrs").hide();
-      $("#gaisaFiltrs").hide();
-      $("#bremzuSkidrums").hide();
-      $("#prieksejieSuporti").hide()
-      $("#aizmugurejieSuporti").hide();
-      $("#prieksejieDiski").hide();
-      $("#aizmugurejieDiski").show();
-    });
-});
-</script>
-
-
-
-
- 
-
 
   <div style="width: 50%; height: 130vh; margin-left: 50%; ">
       {% comment %} TODO hide this if another car is choosen {% endcomment %}
     {% for car in cars %}
-    <div data-carId = {{ car.pk }}>
+    <div class="car-data" data-carId = {{ car.pk }}>
       <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;">Pēdējais odometra rādījums: </div>
 
         <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
@@ -474,10 +152,9 @@ $(document).ready(function() {
           </div>
         </div>
         {% endfor %}
-        
-      {% endfor %}
 
       </div>
+      {% endfor %}
     </div>
   </div>
 
@@ -485,7 +162,20 @@ $(document).ready(function() {
       <script type="text/javascript">
         $(document).ready(function() {
           $( "#updatePartForm" ).hide();
+          $( "#newCarForm" ).hide();
+          $(".car-data").hide()
+
+          $( document ).on("click", "#car" , function(){
+            carId = $(this).attr("data-carId")
+            $(".car-data").not(this).hide()
+            $("div.car-data[ data-carId != '" + carId + "']").hide()
+            $("div.car-data[data-carId = '" + carId + "']").show()
+
+            $("#car").not(this).removeClass("active")
+            $(this).addClass("active")
+          })
         })
+
 
         function showUpdateForm(currentValue, partId, carId, updateAll){
           $( "#updatePartForm" ).show();
@@ -493,10 +183,6 @@ $(document).ready(function() {
           $( "#id_partId").val(partId)
           $( "#id_carId").val(carId)
           $( "#id_updateAll").val(updateAll ? 1 : 0)
-        }
-
-        function update(){
-          
         }
                 
       </script>
