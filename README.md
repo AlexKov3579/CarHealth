@@ -7,7 +7,7 @@ python -m venv c:\path\to\myenv
 ```
 Open folder with environment in powershell and execute script Activate.ps1
 ```
-myenv/Scritps/Activate.ps1
+myenv/Scripts/Activate.ps1
 ```
 
 In order to work, it also requires Django framework.
