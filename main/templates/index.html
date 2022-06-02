@@ -86,7 +86,7 @@
         <div class = "col-4">  
           {% for car in cars %}
           <div class="row" style="padding-left: 4vw; padding-right: 4vw; padding-top: 1.5vh; width: 343px;">
-            <button class="col" id="car" data-carId = {{ car.pk }} style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; width: 343px; height: 60px; text-align: center; " onclick="changeColor()">
+            <button class="col" id="car" data-carId = {{ car.pk }} style="background-color: #FFFFFF; border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; width: 343px; height: 60px; text-align: center; " onclick="changeColor('car')">
               <font face = "Roboto">{{ car.manufacturer }}  {{ car.model }}</font>
             </button>
           </div>
@@ -140,11 +140,11 @@
         </div>
 
         {% for part in car.get_car_parts %}
-        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;"> {{part.typeId.typeName}}</div>
+        <div style="padding-top: 4vh; padding-bottom: 1vh; padding-left: 4vw; font: 20px cormorant;"> <font face = "Cormorant SC">{{part.typeId.typeName}}</font></div>
 
           <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
-            <div class="col-2">Current :</div>
-            <div class="col-2">Maximum :</div>
+            <div class="col-2"><font face = "Cormorant SC">Pašreizējais :</font></div>
+            <div class="col-2"><font face = "Cormorant SC">Maksimālais: </font></div>
           </div>
           <div class="row" style="padding-left: 4vw; padding-right: 4vw;">
             <div class="col" style="border: 2px solid #000000; margin-left: 10px; margin-right: 10px; border-radius: 6px; height: 60px; text-align: center; padding-bottom: 10px;">
@@ -196,7 +196,19 @@
       </script>
 
 <script type="text/javascript">
-  document.getElementById("car").style.background='#EBF0F7';
+
+  var isPressed = false;
+      function changeColor(btn) {
+          var getBtn = document.getElementById(btn);
+          if (isPressed == true) {
+            getBtn.style.backgroundColor = "#FFFFFF"
+            isPressed = false;        
+          }
+          else {
+            getBtn.style.backgroundColor = "#EBF0F7"
+            isPressed = true;
+          }
+      }
 </script>
 
     <!-- Option 1: Bootstrap Bundle with Popper -->
